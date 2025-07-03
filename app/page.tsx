@@ -102,10 +102,10 @@ export default function Portfolio() {
   // Skills data
   const skills = [
     { name: "Python" },
-    { name: "SQL"},
-    { name: "C/C++"},
-    { name: "Java"},
-    
+    { name: "SQL" },
+    { name: "C/C++" },
+    { name: "Java" },
+
 
   ];
 
@@ -148,148 +148,44 @@ export default function Portfolio() {
 
   return (
     <div className={`relative ${darkMode ? 'dark' : ''}`}>
-      {/* Fixed Navigation Bar */}
+      {/* Right Side Navigation Bar */}
       <div
         ref={navRef}
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled
-          ? "bg-transparent backdrop-blur-md shadow-lg py-2 px-4"
-          : "bg-transparent py-7 px-6"
+        className={`fixed left-5 top-0 h-full z-50 transition-all duration-300 flex items-center justify-center ${scrolled
+            ? "bg-transparent backdrop-blur-md shadow-lg py-2 px-4"
+            : "bg-transparent py-7 px-6"
           }`}
       >
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <button
-            onClick={() => scrollToSection('home')}
-            className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500"
-          >
-            P⚡V
-          </button>
-
-          <div className="flex gap-8 md:gap-30 items-center">
-            {['about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full text-sm uppercase tracking-wider transition-all focus:outline-none ${activeSection === section
-                  ? 'bg-cyan-500/10 text-cyan-400'
-                  : 'text-gray-400 hover:text-white'
-                  }`}
-              >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-              </button>
-            ))}
+        <div className="flex flex-col gap-15 items-center">
+          {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
             <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="ml-4 p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-all">
-              {darkMode ? '☀️' : '🌙'}
+              key={section}
+              onClick={() => scrollToSection(section)}
+              className={`w-30 h-9 cursor-grab flex items-center justify-center rounded-full text-sm uppercase tracking-wider transition-all focus:outline-none ${activeSection === section
+                  ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-400/30'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+                }`}
+              aria-label={section}
+            >
+              {section === 'home' && 'HOME'}
+              {section === 'about' && 'ABOUT'}
+              {section === 'skills' && 'SKILLS'}
+              {section === 'projects' && 'PROJECTS'}
+              {section === 'experience' && 'EXPERIENCE'}
+              {section === 'contact' && 'CONTACT'}
             </button>
-          </div>
+          ))}
+
         </div>
       </div>
 
       {/* Hero Section */}
-      <section
-        id="home"
-        ref={(el) => registerSection(el, 'home')}
-        className="min-h-screen flex flex-col items-center justify-center pt-24 pb-12 px-8 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden"
-      >
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-cyan-500/10"
-              style={{
-                width: Math.random() * 100 + 50,
-                height: Math.random() * 100 + 50,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animation: `float ${Math.random() * 10 + 10}s infinite ${Math.random() * 5}s ease-in-out alternate`
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="relative z-10 text-center w-full max-w-3xl mx-auto">
-          <div className="relative w-40 h-40 mb-8 group mx-auto">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-white-50 opacity-0 group-hover:opacity-30 blur-md transition-all duration-500"></div>
-            <Image
-              src="/profile.jpeg"
-              alt="Profile"
-              width={130}
-              height={160}
-              className="rounded-full object-cover border-4 border-gray-700 group-hover:border-cyan-400 transition-all duration-500 z-10"
-              priority
-            />
-          </div>
-
-          {/* Interactive name banner */}
-          <div
-            className="relative mb-6 overflow-hidden cursor-pointer"
-            onClick={() => {
-              const colors = ['from-cyan-400 to-purple-500', 'from-purple-500 to-pink-500', 'from-pink-500 to-red-500', 'from-red-500 to-orange-500'];
-              const randomColors = colors[Math.floor(Math.random() * colors.length)];
-              document.getElementById('name-gradient')?.classList.add('animate-pulse');
-              setTimeout(() => {
-                document.getElementById('name-gradient')?.classList.remove('animate-pulse');
-                document.getElementById('name-gradient')?.classList.remove('bg-gradient-to-r', 'from-cyan-400', 'to-purple-500');
-                document.getElementById('name-gradient')?.classList.add('bg-gradient-to-r', ...randomColors.split(' '));
-              }, 300);
-            }}
-          >
-            <h1
-              id="name-gradient"
-              className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 transition-all duration-500"
-            >
-              <span className="block">PRATHAM</span>
-              <span className="block">VICHARE</span>
-            </h1>
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-purple-500/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          </div>
-
-          <p className="block text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-black-300 transition-all duration-500"> Engineer | Gamer | Learner</p>
-          <div className="flex justify-center gap-35 mt-8">
-            <button
-              onClick={() => scrollToSection('contact')}
-              className=" flex justify-center cursor-pointer px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg hover:opacity-90 transition-all hover:scale-105 active:scale-95"
-            >
-              Contact Me
-            </button>
-            <button
-              onClick={() => {
-                const projectSection = document.getElementById('projects');
-                if (projectSection) {
-                  projectSection.scrollIntoView({ behavior: 'smooth' });
-                  // Add a bounce animation to the first project card
-                  const firstProject = document.querySelector('#projects .group');
-                  firstProject?.classList.add('animate-bounce');
-                  setTimeout(() => firstProject?.classList.remove('animate-bounce'), 1000);
-                }
-              }}
-              className="cursor-pointer px-6 py-3 border border-cyan-400 text-cyan-400 rounded-lg hover:bg-cyan-400/10 transition-all hover:scale-105 active:scale-95"
-            >
-              View Projects
-            </button>
-          </div>
-
-          {/* Scroll indicator */}
-          <div
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
-            onClick={() => scrollToSection('about')}
-          >
-            <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-              <div className="w-1 h-2 bg-gray-400 rounded-full mt-2 animate-scroll"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-     {/* About Section - Interactive Split Screen */}
 <section
-  id="about"
-  ref={(el) => registerSection(el, 'about')}
-  className="min-h-screen flex items-center justify-center py-24 px-8 bg-gradient-to-br from-gray-800 to-gray-900 relative"
+  id="home"
+  ref={(el) => registerSection(el, 'home')}
+  className="min-h-screen flex flex-col items-center justify-center pt-24 pb-12 px-8 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden"
 >
-  {/* Animated background */}
+  {/* Animated background elements */}
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
     {[...Array(20)].map((_, i) => (
       <div
@@ -306,108 +202,278 @@ export default function Portfolio() {
     ))}
   </div>
 
-  <div className="max-w-6xl mx-auto w-full h-full ">
-    {/* Split screen container */}
-    <div className="flex flex-col lg:flex-row h-full gap-6">
-      {/* Left panel - Professional */}
-      <div className="lg:w-1/2 bg-gray-800/50 rounded-2xl p-8 border border-gray-700 hover:border-cyan-400 transition-all duration-300 overflow-hidden">
-        <div className="relative h-full">
-          <h2 className="text-4xl font-bold mb-6 text-cyan-400 group-hover:text-purple-400 transition-colors duration-300">
-            <span className="inline-block hover:scale-105 transition-transform">The Engineer</span>
-          </h2>
-          
-          <Image
-            src="/about-professional.jpg"
-            alt="Professional Profile"
-            width={500}
-            height={600}
-            className="rounded-lg mb-19 object-cover w-full h-48 hover:scale-[1.02] transition-transform duration-500"
-          />
-          
-          <p className="text-gray-300 text-lg leading-relaxed mb-6">
-            I hold a Master's in Electrical and Computer Engineering from the University of Windsor, specializing in creating real-world tech solutions that bridge hardware and software.
-          </p>
-           <div className="bottom-18 left-0 right-0 flex flex-wrap gap-2 justify-center">
-            {['Communication', 'Time management', 'Emotional Intelligence', 'Problem Solving', 'Curiosity and Continuous Learning'].map((item) => (
-              <span
-                key={item}
-                className="px-3 py-1 bg-purple-500/10 rounded-full text-sm text-cyan-400 hover:bg-purple-500/20 transition-all cursor-default"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-800 to-transparent"></div>
-        </div>
-      </div>
+  <div className="relative z-10 text-center w-full max-w-3xl mx-auto">
+    <div className="relative w-40 h-40 mb-8 group mx-auto">
+      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-white-50 opacity-0 group-hover:opacity-30 blur-md transition-all duration-500"></div>
+      <Image
+        src="/profile.jpeg"
+        alt="Profile"
+        width={130}
+        height={160}
+        className="rounded-full object-cover border-4 border-gray-700 group-hover:border-cyan-400 transition-all duration-500 z-10"
+        priority
+      />
+    </div>
 
-      {/* Right panel - Personal/Gaming */}
-      <div className="lg:w-1/2 bg-gray-800/50 rounded-2xl p-8  border border-gray-700 hover:border-purple-400 transition-all duration-300 overflow-hidden">
-        <div className="relative h-full">
-          <h2 className="text-4xl font-bold mb-6 text-purple-400 group-hover:text-cyan-400 transition-colors duration-300">
-            <span className="inline-block hover:scale-105 transition-transform">The Gamer</span>
-          </h2>
-          
-          {/* Interactive game/anime gallery */}
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            {[
-              { name: 'PUBG', image: '/pubg.jpg', color: 'from-yellow-500/20 to-yellow-700/20' },
-              { name: 'Valorant', image: '/valorant.jpg', color: 'from-red-500/20 to-red-700/20' },
-              { name: 'FIFA', image: '/fifa.jpg', color: 'from-blue-500/20 to-blue-700/20' },
-              { name: 'One Piece', image: '/one-piece.jpg', color: 'from-orange-500/20 to-orange-700/20' },
-              { name: 'CALL OF DUTY', image: '/callofduty.jpg', color: 'from-gray-500/20 to-gray-700/20' },
-              { name: 'More...', image: '', color: 'from-gray-600/20 to-gray-800/20' }
-            ].map((item, index) => (
+    {/* Futuristic Name Banner with Particle Effects */}
+    <div 
+      className="relative mb-10 group cursor-pointer"
+      onClick={() => {
+        const colors = ['from-cyan-400 to-purple-500', 'from-purple-500 to-pink-500', 
+                       'from-pink-500 to-red-500', 'from-red-500 to-orange-500'];
+        const randomColors = colors[Math.floor(Math.random() * colors.length)];
+        document.getElementById('name-container')?.classList.add('animate-tilt');
+        setTimeout(() => {
+          document.getElementById('name-container')?.classList.remove('animate-tilt');
+          document.getElementById('name-gradient')?.classList.remove('bg-gradient-to-r', 'from-cyan-400', 'to-purple-500');
+          document.getElementById('name-gradient')?.classList.add('bg-gradient-to-r', ...randomColors.split(' '));
+        }, 1000);
+      }}
+    >
+      {/* 3D floating container */}
+      <div 
+        id="name-container"
+        className="relative p-8 rounded-2xl bg-gray-900/50 border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-500 hover:shadow-[0_0_40px_-10px_rgba(34,211,238,0.3)]"
+        style={{
+          transformStyle: 'preserve-3d',
+          transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg)'
+        }}
+      >
+        {/* Holographic name with depth */}
+        <div className="relative z-10">
+          <h1
+            id="name-gradient"
+            className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 transition-all duration-500 hover:bg-gradient-to-r hover:from-pink-500 hover:to-cyan-400"
+            style={{
+              textShadow: '0 0 10px rgba(34, 211, 238, 0.3)'
+            }}
+          >
+            <span className="block hover:scale-105 transition-transform duration-300">PRATHAM</span>
+            <span className="block hover:scale-105 transition-transform duration-300">VICHARE</span>
+          </h1>
+        </div>
+        
+        {/* Holographic effect layers */}
+        <div className="absolute inset-0 overflow-hidden rounded-2xl">
+          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-transparent to-purple-500/5"></div>
+          <div className="absolute -inset-2 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        </div>
+        
+        {/* Floating particles */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-cyan-400/20 pointer-events-none"
+            style={{
+              width: `${Math.random() * 6 + 2}px`,
+              height: `${Math.random() * 6 + 2}px`,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animation: `float ${Math.random() * 10 + 5}s infinite ${Math.random() * 5}s ease-in-out alternate`,
+              opacity: 0.6
+            }}
+          />
+        ))}
+        
+        {/* Animated role text with typewriter effect */}
+        <div className="mt-6 h-12 md:h-16 overflow-hidden relative">
+          <div className="absolute inset-0 flex items-center justify-center">
+            {['GAMER', 'ENGINEER', 'LEARNER'].map((role, index) => (
               <div 
-                key={index}
-                className={`aspect-square rounded-lg overflow-hidden bg-gradient-to-br ${item.color} relative group cursor-pointer hover:scale-105 transition-transform duration-300`}
+                key={role}
+                className="absolute w-full text-center"
+                style={{
+                  animation: `typing 9s infinite ${index * 3}s steps(20), 
+                              blink 0.5s infinite alternate ${index * 3}s,
+                              fadeOut 9s infinite ${index * 3 + 2.5}s`
+                }}
               >
-                {item.image && (
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    fill
-                    className="object-cover opacity-70 group-hover:opacity-90 transition-opacity"
-                  />
-                )}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-white font-medium text-sm md:text-lg drop-shadow-lg">
-                    {item.name}
-                  </span>
-                </div>
+                <span className="text-xl md:text-3xl font-mono font-bold text-cyan-300 tracking-wider">
+                  {role.split('').map((char, i) => (
+                    <span 
+                      key={i}
+                      className="inline-block animate-wave"
+                      style={{ animationDelay: `${i * 0.1}s` }}
+                    >
+                      {char}
+                    </span>
+                  ))}
+                </span>
+                <span className="ml-1 inline-block w-2 h-8 bg-cyan-400 align-middle animate-blink"></span>
               </div>
             ))}
           </div>
-          
-          <p className="text-gray-300 text-lg leading-relaxed">
-            When I'm not coding, you'll find me ranking up in competitive shooters, perfecting my FIFA skills, or binge-watching One Piece. Gaming fuels my problem-solving mindset and teamwork abilities.
-          </p>
-          
-          {/* Interactive skill tags */}
-          <div className="bottom-18 left-0 right-0 flex flex-wrap gap-2 justify-center">
-            {['Strategic Thinking', 'Quick Reflexes', 'Team Coordination', 'Adaptability', 'Perseverance'].map((item) => (
-              <span
-                key={item}
-                className="px-3 py-1 bg-purple-500/10 rounded-full text-sm text-purple-300 hover:bg-purple-500/20 transition-all cursor-default"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
         </div>
       </div>
+      
+      {/* Glow effect */}
+      <div className="absolute -inset-4 bg-cyan-400/10 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
     </div>
 
-    {/* Connecting middle element */}
-    <div className="hidden lg:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg animate-pulse-slow">
-        &
+    {/* Buttons */}
+    <div className="flex justify-center gap-4 mt-8">
+      <button
+        onClick={() => scrollToSection('contact')}
+        className="flex justify-center cursor-pointer px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg hover:opacity-90 transition-all hover:scale-105 active:scale-95"
+      >
+        Contact Me
+      </button>
+      <button
+        onClick={() => {
+          const projectSection = document.getElementById('projects');
+          if (projectSection) {
+            projectSection.scrollIntoView({ behavior: 'smooth' });
+            const firstProject = document.querySelector('#projects .group');
+            firstProject?.classList.add('animate-bounce');
+            setTimeout(() => firstProject?.classList.remove('animate-bounce'), 1000);
+          }
+        }}
+        className="cursor-pointer px-6 py-3 border border-cyan-400 text-cyan-400 rounded-lg hover:bg-cyan-400/10 transition-all hover:scale-105 active:scale-95"
+      >
+        View Projects
+      </button>
+    </div>
+
+    {/* Scroll indicator */}
+    <div
+      className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+      onClick={() => scrollToSection('about')}
+    >
+      <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
+        <div className="w-1 h-2 bg-gray-400 rounded-full mt-2 animate-scroll"></div>
       </div>
     </div>
   </div>
 </section>
 
-<style jsx global>{`
+        
+
+      {/* About Section - Interactive Split Screen */}
+      <section
+        id="about"
+        ref={(el) => registerSection(el, 'about')}
+        className="min-h-screen flex items-center justify-center py-24 px-8 bg-gradient-to-br from-gray-800 to-gray-900 relative"
+      >
+        {/* Animated background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-cyan-500/10"
+              style={{
+                width: Math.random() * 100 + 50,
+                height: Math.random() * 100 + 50,
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                animation: `float ${Math.random() * 10 + 10}s infinite ${Math.random() * 5}s ease-in-out alternate`
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="max-w-6xl mx-auto w-full h-full ">
+          {/* Split screen container */}
+          <div className="flex flex-col lg:flex-row h-full gap-6">
+            {/* Left panel - Professional */}
+            <div className="lg:w-1/2 bg-gray-800/50 rounded-2xl p-8 border border-gray-700 hover:border-cyan-400 transition-all duration-300 overflow-hidden">
+              <div className="relative h-full">
+                <h2 className="text-4xl font-bold mb-6 text-cyan-400 group-hover:text-purple-400 transition-colors duration-300">
+                  <span className="inline-block hover:scale-105 transition-transform">The Engineer</span>
+                </h2>
+
+                <Image
+                  src="/about-professional.jpg"
+                  alt="Professional Profile"
+                  width={500}
+                  height={600}
+                  className="rounded-lg mb-19 object-cover w-full h-48 hover:scale-[1.02] transition-transform duration-500"
+                />
+
+                <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                  I hold a Master's in Electrical and Computer Engineering from the University of Windsor, specializing in creating real-world tech solutions that bridge hardware and software.
+                </p>
+                <div className="bottom-18 left-0 right-0 flex flex-wrap gap-2 justify-center">
+                  {['Communication', 'Time management', 'Emotional Intelligence', 'Problem Solving', 'Curiosity and Continuous Learning'].map((item) => (
+                    <span
+                      key={item}
+                      className="px-3 py-1 bg-purple-500/10 rounded-full text-sm text-cyan-400 hover:bg-purple-500/20 transition-all cursor-default"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-800 to-transparent"></div>
+              </div>
+            </div>
+
+            {/* Right panel - Personal/Gaming */}
+            <div className="lg:w-1/2 bg-gray-800/50 rounded-2xl p-8  border border-gray-700 hover:border-purple-400 transition-all duration-300 overflow-hidden">
+              <div className="relative h-full">
+                <h2 className="text-4xl font-bold mb-6 text-purple-400 group-hover:text-cyan-400 transition-colors duration-300">
+                  <span className="inline-block hover:scale-105 transition-transform">The Gamer</span>
+                </h2>
+
+                {/* Interactive game/anime gallery */}
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                  {[
+                    { name: 'PUBG', image: '/pubg.jpg', color: 'from-yellow-500/20 to-yellow-700/20' },
+                    { name: 'Valorant', image: '/valorant.jpg', color: 'from-red-500/20 to-red-700/20' },
+                    { name: 'FIFA', image: '/fifa.jpg', color: 'from-blue-500/20 to-blue-700/20' },
+                    { name: 'One Piece', image: '/one-piece.jpg', color: 'from-orange-500/20 to-orange-700/20' },
+                    { name: 'CALL OF DUTY', image: '/callofduty.jpg', color: 'from-gray-500/20 to-gray-700/20' },
+                    { name: 'More...', image: '', color: 'from-gray-600/20 to-gray-800/20' }
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className={`aspect-square rounded-lg overflow-hidden bg-gradient-to-br ${item.color} relative group cursor-pointer hover:scale-105 transition-transform duration-300`}
+                    >
+                      {item.image && (
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover opacity-70 group-hover:opacity-90 transition-opacity"
+                        />
+                      )}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-white font-medium text-sm md:text-lg drop-shadow-lg">
+                          {item.name}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-gray-300 text-lg leading-relaxed">
+                  When I'm not coding, you'll find me ranking up in competitive shooters, perfecting my FIFA skills, or binge-watching One Piece. Gaming fuels my problem-solving mindset and teamwork abilities.
+                </p>
+
+                {/* Interactive skill tags */}
+                <div className="bottom-18 left-0 right-0 flex flex-wrap gap-2 justify-center">
+                  {['Strategic Thinking', 'Quick Reflexes', 'Team Coordination', 'Adaptability', 'Perseverance'].map((item) => (
+                    <span
+                      key={item}
+                      className="px-3 py-1 bg-purple-500/10 rounded-full text-sm text-purple-300 hover:bg-purple-500/20 transition-all cursor-default"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Connecting middle element */}
+          <div className="hidden lg:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg animate-pulse-slow">
+              &
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <style jsx global>{`
   @keyframes pulse-slow {
     0%, 100% { transform: scale(1); opacity: 0.8; }
     50% { transform: scale(1.1); opacity: 1; }
@@ -463,7 +529,7 @@ export default function Portfolio() {
               >
                 {/* Skill content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
-                 
+
                   <h3 className="text-xl font-medium text-gray-300 text-center">
                     {skill.name}
                   </h3>
@@ -499,7 +565,7 @@ export default function Portfolio() {
 
           {/* Skill categories */}
           <div className="mt-16 flex flex-wrap justify-center gap-10">
-            {['Programming', 'REST APIs', ' AirFlow', 'Docker', 'MySQL', 'MogoDB','UNIX/Linux'].map((category) => (
+            {['Programming', 'REST APIs', ' AirFlow', 'Docker', 'MySQL', 'MogoDB', 'UNIX/Linux'].map((category) => (
               <button
                 key={category}
                 className="px-4 py-2 rounded-full bg-gray-800 text-gray-300 hover:bg-cyan-500/20 hover:text-cyan-400 transition-all duration-300 border border-gray-700 hover:border-cyan-400"
@@ -809,7 +875,7 @@ export default function Portfolio() {
         </div>
       </footer>
 
-      {/* Add this to your globals.css */}
+      {/* Responsive CSS */}
       <style jsx global>{`
         @keyframes float {
           0% { transform: translateY(0) rotate(0deg); }
@@ -824,6 +890,85 @@ export default function Portfolio() {
         .animate-scroll {
           animation: scroll 2s infinite;
         }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+          /* Move navbar to bottom on mobile */
+          .fixed.right-0 {
+            right: auto;
+            bottom: 0;
+            top: auto;
+            left: 0;
+            width: 100%;
+            height: auto;
+            padding: 10px 0;
+            background-color: rgba(17, 24, 39, 0.8) !important;
+          }
+          
+          .flex-col {
+            flex-direction: row;
+            justify-content: center;
+            gap: 10px;
+          }
+          
+          section {
+            padding-right: 0 !important;
+            padding-bottom: 70px;
+          }
+
+          footer {
+            padding-right: 0 !important;
+            padding-bottom: 70px;
+          }
+        }
+        @keyframes roleChange {
+    0%, 20% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    25%, 45% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    50%, 70% {
+      transform: translateY(-200%);
+      opacity: 0;
+    }
+    75%, 95% {
+      transform: translateY(-300%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes animate-tilt {
+    0%, 100% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
+    25% { transform: perspective(1000px) rotateX(5deg) rotateY(5deg); }
+    50% { transform: perspective(1000px) rotateX(0deg) rotateY(-5deg); }
+    75% { transform: perspective(1000px) rotateX(-5deg) rotateY(0deg); }
+  }
+  
+  @keyframes typing {
+    0%, 90%, 100% { width: 0; }
+    30%, 60% { width: 100%; }
+  }
+  
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+  
+  @keyframes fadeOut {
+    0%, 80% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  
+  @keyframes wave {
+    0%, 40%, 100% { transform: translateY(0); }
+    20% { transform: translateY(-10px); }
+  }
       `}</style>
     </div>
   );
