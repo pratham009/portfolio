@@ -5,7 +5,6 @@ import Image from 'next/image';
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState('home');
   const [scrolled, setScrolled] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -65,7 +64,6 @@ export default function Portfolio() {
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to a server
     console.log('Form submitted:', formData);
     setFormSubmitted(true);
     setFormData({
@@ -99,15 +97,13 @@ export default function Portfolio() {
     }
   ];
 
-  // Skills data
-  const skills = [
-    { name: "Python" },
-    { name: "SQL" },
-    { name: "C/C++" },
-    { name: "Java" },
-
-
-  ];
+  // Skills data organized by category
+  const skills = {
+    "Programming Languages": ["Python", "SQL", "C/C++", "Java", "JavaScript"],
+    "Web Technologies": ["React", "Next.js", "Node.js", "REST APIs", "HTML/CSS"],
+    "Databases": ["MySQL", "MongoDB", "PostgreSQL"],
+    "DevOps & Tools": ["Docker", "Git", "UNIX/Linux", "AirFlow", "PowerShell"]
+  };
 
   // Experience data
   const experience = [
@@ -118,8 +114,8 @@ export default function Portfolio() {
       description: "Drove adoption of modern web technologies by demonstrating their efficiency in side-by-side comparisons with legacy systems.",
       achievements: [
         "Provided Technical Support for desktop systems and software applications, troubleshooting hardware/software issues",
-        "Participated in system testing and documentation, working with QA teams to ensure smooth deployments.",
-        "Learned to communicate and collaborate effectively with cross-functional teams, including developers, QA engineers, and product managers."
+        "Participated in system testing and documentation, working with QA teams to ensure smooth deployments",
+        "Communicated and collaborated effectively with cross-functional teams"
       ]
     },
     {
@@ -130,453 +126,229 @@ export default function Portfolio() {
       achievements: [
         "Proactively maintained infrastructure (Windows/AD/PowerShell)",
         "Reduced API response time by 30%",
-        "Optimized clinical workflows by resolving critical hardware/software issues."
+        "Optimized clinical workflows by resolving critical hardware/software issues"
       ]
     },
     {
       role: "Software Engineer Intern",
       company: "K.S Technologies",
       period: "Sept. 2022 - Mar 2023",
-      description: "Developed Full Stack Web Application",
+      description: "Developed Full Stack Web Application using modern technologies",
       achievements: [
-        "Designed and Implemeted Full Stack Web Application using Java, HTML, CSS, JavaScript, and MySQL",
-        "Desiged UML flow Diagrams and ER Diagrams for the application",
-        "Understood and implemented Agile methodologies in the project lifecycle."
+        "Designed and Implemented Full Stack Web Application using Java, HTML, CSS, JavaScript, and MySQL",
+        "Created UML flow Diagrams and ER Diagrams for the application",
+        "Implemented Agile methodologies in the project lifecycle"
       ]
     }
   ];
 
   return (
-    <div className={`relative ${darkMode ? 'dark' : ''}`}>
-      {/* Right Side Navigation Bar */}
+    <div className="relative bg-gray-50">
+      {/* Modern Navigation Bar */}
       <div
         ref={navRef}
-        className={`fixed left-5 top-0 h-full z-50 transition-all duration-300 flex items-center justify-center ${scrolled
-            ? "bg-transparent backdrop-blur-md shadow-lg py-2 px-4"
-            : "bg-transparent py-7 px-6"
-          }`}
+        className={`fixed left-0 top-0 w-full z-50 transition-all duration-300 flex justify-center ${
+          scrolled
+            ? "bg-white shadow-md py-3"
+            : "bg-transparent py-5"
+        }`}
       >
-        <div className="flex flex-col gap-15 items-center">
+        <div className="flex gap-4 md:gap-8">
           {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
             <button
               key={section}
               onClick={() => scrollToSection(section)}
-              className={`w-30 h-9 cursor-grab flex items-center justify-center rounded-full text-sm uppercase tracking-wider transition-all focus:outline-none ${activeSection === section
-                  ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-400/30'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
-                }`}
+              className={`px-3 py-1 md:px-4 md:py-2 rounded-full text-sm md:text-base font-medium transition-all ${
+                activeSection === section
+                  ? 'bg-teal-600 text-white shadow-md'
+                  : 'text-gray-700 hover:text-teal-600 hover:bg-teal-50'
+              }`}
               aria-label={section}
             >
-              {section === 'home' && 'HOME'}
-              {section === 'about' && 'ABOUT'}
-              {section === 'skills' && 'SKILLS'}
-              {section === 'projects' && 'PROJECTS'}
-              {section === 'experience' && 'EXPERIENCE'}
-              {section === 'contact' && 'CONTACT'}
+              {section.charAt(0).toUpperCase() + section.slice(1)}
             </button>
           ))}
-
         </div>
       </div>
 
       {/* Hero Section */}
-<section
-  id="home"
-  ref={(el) => registerSection(el, 'home')}
-  className="min-h-screen flex flex-col items-center justify-center pt-24 pb-12 px-8 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden"
->
-  {/* Animated background elements */}
-  <div className="absolute inset-0 overflow-hidden pointer-events-none">
-    {[...Array(20)].map((_, i) => (
-      <div
-        key={i}
-        className="absolute rounded-full bg-cyan-500/10"
-        style={{
-          width: Math.random() * 100 + 50,
-          height: Math.random() * 100 + 50,
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-          animation: `float ${Math.random() * 10 + 10}s infinite ${Math.random() * 5}s ease-in-out alternate`
-        }}
-      />
-    ))}
-  </div>
-
-  <div className="relative z-10 text-center w-full max-w-3xl mx-auto">
-    <div className="relative w-40 h-40 mb-8 group mx-auto">
-      <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-white-50 opacity-0 group-hover:opacity-30 blur-md transition-all duration-500"></div>
-      <Image
-        src="/profile.jpeg"
-        alt="Profile"
-        width={130}
-        height={160}
-        className="rounded-full object-cover border-4 border-gray-700 group-hover:border-cyan-400 transition-all duration-500 z-10"
-        priority
-      />
-    </div>
-
-    {/* Futuristic Name Banner with Particle Effects */}
-    <div 
-      className="relative mb-10 group cursor-pointer"
-      onClick={() => {
-        const colors = ['from-cyan-400 to-purple-500', 'from-purple-500 to-pink-500', 
-                       'from-pink-500 to-red-500', 'from-red-500 to-orange-500'];
-        const randomColors = colors[Math.floor(Math.random() * colors.length)];
-        document.getElementById('name-container')?.classList.add('animate-tilt');
-        setTimeout(() => {
-          document.getElementById('name-container')?.classList.remove('animate-tilt');
-          document.getElementById('name-gradient')?.classList.remove('bg-gradient-to-r', 'from-cyan-400', 'to-purple-500');
-          document.getElementById('name-gradient')?.classList.add('bg-gradient-to-r', ...randomColors.split(' '));
-        }, 1000);
-      }}
-    >
-      {/* 3D floating container */}
-      <div 
-        id="name-container"
-        className="relative p-8 rounded-2xl bg-gray-900/50 border border-cyan-400/20 hover:border-cyan-400/40 transition-all duration-500 hover:shadow-[0_0_40px_-10px_rgba(34,211,238,0.3)]"
-        style={{
-          transformStyle: 'preserve-3d',
-          transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg)'
-        }}
+      <section
+        id="home"
+        ref={(el) => registerSection(el, 'home')}
+        className="min-h-screen flex flex-col items-center justify-center pt-24 pb-12 px-8 bg-gradient-to-br from-white to-gray-100 relative overflow-hidden"
       >
-        {/* Holographic name with depth */}
-        <div className="relative z-10">
-          <h1
-            id="name-gradient"
-            className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 transition-all duration-500 hover:bg-gradient-to-r hover:from-pink-500 hover:to-cyan-400"
-            style={{
-              textShadow: '0 0 10px rgba(34, 211, 238, 0.3)'
-            }}
-          >
-            <span className="block hover:scale-105 transition-transform duration-300">PRATHAM</span>
-            <span className="block hover:scale-105 transition-transform duration-300">VICHARE</span>
-          </h1>
-        </div>
-        
-        {/* Holographic effect layers */}
-        <div className="absolute inset-0 overflow-hidden rounded-2xl">
-          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-10 mix-blend-overlay"></div>
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-transparent to-purple-500/5"></div>
-          <div className="absolute -inset-2 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        </div>
-        
-        {/* Floating particles */}
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-cyan-400/20 pointer-events-none"
-            style={{
-              width: `${Math.random() * 6 + 2}px`,
-              height: `${Math.random() * 6 + 2}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animation: `float ${Math.random() * 10 + 5}s infinite ${Math.random() * 5}s ease-in-out alternate`,
-              opacity: 0.6
-            }}
-          />
-        ))}
-        
-        {/* Animated role text with typewriter effect */}
-        <div className="mt-6 h-12 md:h-16 overflow-hidden relative">
-          <div className="absolute inset-0 flex items-center justify-center">
-            {['GAMER', 'ENGINEER', 'LEARNER'].map((role, index) => (
-              <div 
-                key={role}
-                className="absolute w-full text-center"
-                style={{
-                  animation: `typing 9s infinite ${index * 3}s steps(20), 
-                              blink 0.5s infinite alternate ${index * 3}s,
-                              fadeOut 9s infinite ${index * 3 + 2.5}s`
-                }}
-              >
-                <span className="text-xl md:text-3xl font-mono font-bold text-cyan-300 tracking-wider">
-                  {role.split('').map((char, i) => (
-                    <span 
-                      key={i}
-                      className="inline-block animate-wave"
-                      style={{ animationDelay: `${i * 0.1}s` }}
-                    >
-                      {char}
-                    </span>
-                  ))}
-                </span>
-                <span className="ml-1 inline-block w-2 h-8 bg-cyan-400 align-middle animate-blink"></span>
+        <div className="max-w-6xl mx-auto w-full flex flex-col md:flex-row items-center gap-12">
+          {/* Profile Content */}
+          <div className="md:w-1/2 space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-900">
+                Hi, I'm <span className="text-teal-600">Pratham Vichare</span>
+              </h1>
+              <div className="text-xl md:text-2xl text-gray-600">
+                <span className="font-medium">Electrical & Computer Engineer</span> | Problem Solver | Tech Enthusiast
               </div>
-            ))}
+            </div>
+            
+            <p className="text-lg text-gray-600 leading-relaxed">
+              I build innovative solutions that bridge hardware and software, with expertise in full-stack development and system architecture.
+            </p>
+            
+            <div className="flex gap-4">
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all shadow-md hover:shadow-lg"
+              >
+                Contact Me
+              </button>
+              <button
+                onClick={() => scrollToSection('projects')}
+                className="px-6 py-3 border border-teal-600 text-teal-600 rounded-lg hover:bg-teal-50 transition-all"
+              >
+                View Projects
+              </button>
+            </div>
+          </div>
+          
+          {/* Profile Image */}
+          <div className="md:w-1/2 flex justify-center">
+            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
+              <Image
+                src="/profile.jpeg"
+                alt="Pratham Vichare"
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-teal-600/10 to-transparent"></div>
+            </div>
           </div>
         </div>
-      </div>
-      
-      {/* Glow effect */}
-      <div className="absolute -inset-4 bg-cyan-400/10 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
-    </div>
-
-    {/* Buttons */}
-    <div className="flex justify-center gap-4 mt-8">
-      <button
-        onClick={() => scrollToSection('contact')}
-        className="flex justify-center cursor-pointer px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-lg hover:opacity-90 transition-all hover:scale-105 active:scale-95"
-      >
-        Contact Me
-      </button>
-      <button
-        onClick={() => {
-          const projectSection = document.getElementById('projects');
-          if (projectSection) {
-            projectSection.scrollIntoView({ behavior: 'smooth' });
-            const firstProject = document.querySelector('#projects .group');
-            firstProject?.classList.add('animate-bounce');
-            setTimeout(() => firstProject?.classList.remove('animate-bounce'), 1000);
-          }
-        }}
-        className="cursor-pointer px-6 py-3 border border-cyan-400 text-cyan-400 rounded-lg hover:bg-cyan-400/10 transition-all hover:scale-105 active:scale-95"
-      >
-        View Projects
-      </button>
-    </div>
-
-    {/* Scroll indicator */}
-    <div
-      className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
-      onClick={() => scrollToSection('about')}
-    >
-      <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-        <div className="w-1 h-2 bg-gray-400 rounded-full mt-2 animate-scroll"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
         
+        {/* Scroll indicator */}
+        <div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+          onClick={() => scrollToSection('about')}
+        >
+          <div className="w-6 h-10 border-2 border-teal-600 rounded-full flex justify-center">
+            <div className="w-1 h-2 bg-teal-600 rounded-full mt-2 animate-scroll"></div>
+          </div>
+        </div>
+      </section>
 
-      {/* About Section - Interactive Split Screen */}
+      {/* About Section */}
       <section
         id="about"
         ref={(el) => registerSection(el, 'about')}
-        className="min-h-screen flex items-center justify-center py-24 px-8 bg-gradient-to-br from-gray-800 to-gray-900 relative"
+        className="min-h-screen flex items-center justify-center py-24 px-8 bg-white"
       >
-        {/* Animated background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-cyan-500/10"
-              style={{
-                width: Math.random() * 100 + 50,
-                height: Math.random() * 100 + 50,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animation: `float ${Math.random() * 10 + 10}s infinite ${Math.random() * 5}s ease-in-out alternate`
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="max-w-6xl mx-auto w-full h-full ">
-          {/* Split screen container */}
-          <div className="flex flex-col lg:flex-row h-full gap-6">
-            {/* Left panel - Professional */}
-            <div className="lg:w-1/2 bg-gray-800/50 rounded-2xl p-8 border border-gray-700 hover:border-cyan-400 transition-all duration-300 overflow-hidden">
-              <div className="relative h-full">
-                <h2 className="text-4xl font-bold mb-6 text-cyan-400 group-hover:text-purple-400 transition-colors duration-300">
-                  <span className="inline-block hover:scale-105 transition-transform">The Engineer</span>
-                </h2>
-
-                <Image
-                  src="/about-professional.jpg"
-                  alt="Professional Profile"
-                  width={500}
-                  height={600}
-                  className="rounded-lg mb-19 object-cover w-full h-48 hover:scale-[1.02] transition-transform duration-500"
-                />
-
-                <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                  I hold a Master's in Electrical and Computer Engineering from the University of Windsor, specializing in creating real-world tech solutions that bridge hardware and software.
-                </p>
-                <div className="bottom-18 left-0 right-0 flex flex-wrap gap-2 justify-center">
-                  {['Communication', 'Time management', 'Emotional Intelligence', 'Problem Solving', 'Curiosity and Continuous Learning'].map((item) => (
-                    <span
-                      key={item}
-                      className="px-3 py-1 bg-purple-500/10 rounded-full text-sm text-cyan-400 hover:bg-purple-500/20 transition-all cursor-default"
-                    >
-                      {item}
-                    </span>
-                  ))}
+        <div className="max-w-6xl mx-auto w-full">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-900">
+            About <span className="text-teal-600">Me</span>
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-12">
+            {/* Education */}
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="bg-teal-100 p-3 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-800 to-transparent"></div>
+                <h3 className="text-2xl font-bold text-gray-800">Education</h3>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="pl-4 border-l-4 border-teal-400">
+                  <h4 className="text-xl font-semibold text-gray-800">Master's in Electrical & Computer Engineering</h4>
+                  <p className="text-gray-600">University of Windsor</p>
+                  <p className="text-gray-500 text-sm">2023 - 2025</p>
+                </div>
+                
+                <p className="text-gray-600 leading-relaxed">
+                  Specialized in creating real-world tech solutions that bridge hardware and software, with coursework in advanced algorithms, distributed systems, and machine learning.
+                </p>
               </div>
             </div>
-
-            {/* Right panel - Personal/Gaming */}
-            <div className="lg:w-1/2 bg-gray-800/50 rounded-2xl p-8  border border-gray-700 hover:border-purple-400 transition-all duration-300 overflow-hidden">
-              <div className="relative h-full">
-                <h2 className="text-4xl font-bold mb-6 text-purple-400 group-hover:text-cyan-400 transition-colors duration-300">
-                  <span className="inline-block hover:scale-105 transition-transform">The Gamer</span>
-                </h2>
-
-                {/* Interactive game/anime gallery */}
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  {[
-                    { name: 'PUBG', image: '/pubg.jpg', color: 'from-yellow-500/20 to-yellow-700/20' },
-                    { name: 'Valorant', image: '/valorant.jpg', color: 'from-red-500/20 to-red-700/20' },
-                    { name: 'FIFA', image: '/fifa.jpg', color: 'from-blue-500/20 to-blue-700/20' },
-                    { name: 'One Piece', image: '/one-piece.jpg', color: 'from-orange-500/20 to-orange-700/20' },
-                    { name: 'CALL OF DUTY', image: '/callofduty.jpg', color: 'from-gray-500/20 to-gray-700/20' },
-                    { name: 'More...', image: '', color: 'from-gray-600/20 to-gray-800/20' }
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className={`aspect-square rounded-lg overflow-hidden bg-gradient-to-br ${item.color} relative group cursor-pointer hover:scale-105 transition-transform duration-300`}
-                    >
-                      {item.image && (
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          className="object-cover opacity-70 group-hover:opacity-90 transition-opacity"
-                        />
-                      )}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-white font-medium text-sm md:text-lg drop-shadow-lg">
-                          {item.name}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+            
+            {/* Personal */}
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="bg-teal-100 p-3 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
                 </div>
-
-                <p className="text-gray-300 text-lg leading-relaxed">
-                  When I'm not coding, you'll find me ranking up in competitive shooters, perfecting my FIFA skills, or binge-watching One Piece. Gaming fuels my problem-solving mindset and teamwork abilities.
-                </p>
-
-                {/* Interactive skill tags */}
-                <div className="bottom-18 left-0 right-0 flex flex-wrap gap-2 justify-center">
-                  {['Strategic Thinking', 'Quick Reflexes', 'Team Coordination', 'Adaptability', 'Perseverance'].map((item) => (
-                    <span
-                      key={item}
-                      className="px-3 py-1 bg-purple-500/10 rounded-full text-sm text-purple-300 hover:bg-purple-500/20 transition-all cursor-default"
-                    >
-                      {item}
-                    </span>
-                  ))}
+                <h3 className="text-2xl font-bold text-gray-800">Personal</h3>
+              </div>
+              
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                When I'm not coding, I enjoy competitive gaming which enhances my problem-solving and teamwork skills. I'm passionate about continuous learning and staying updated with the latest tech trends.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Strategic Thinking</span>
+                  <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Teamwork</span>
+                  <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Adaptability</span>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Connecting middle element */}
-          <div className="hidden lg:flex absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg animate-pulse-slow">
-              &
             </div>
           </div>
         </div>
       </section>
 
-      <style jsx global>{`
-  @keyframes pulse-slow {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.1); opacity: 1; }
-  }
-  .animate-pulse-slow {
-    animation: pulse-slow 3s infinite;
-  }
-`}</style>
-
-      {/* Skills Section - Interactive Skill Boxes */}
+      {/* Skills Section */}
       <section
         id="skills"
         ref={(el) => registerSection(el, 'skills')}
-        className="min-h-screen flex items-center justify-center py-24 px-8 bg-gradient-to-br from-gray-900 to-gray-800 relative overflow-hidden"
+        className="min-h-screen flex items-center justify-center py-24 px-8 bg-gray-50"
       >
-        {/* Animated background elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(15)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-cyan-500/10"
-              style={{
-                width: Math.random() * 100 + 50,
-                height: Math.random() * 100 + 50,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animation: `pulse ${Math.random() * 15 + 10}s infinite ease-in-out`,
-                opacity: Math.random() * 0.2 + 0.1
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="max-w-6xl mx-auto w-full relative z-10">
-          <h2 className="text-4xl font-bold mb-16 text-center text-cyan-400 hover:text-cyan-300 transition-colors duration-300">
-            Technical <span className="text-white">Skills</span>
+        <div className="max-w-6xl mx-auto w-full">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-900">
+            Technical <span className="text-teal-600">Skills</span>
           </h2>
-
-          {/* Interactive Skill Boxes */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {skills.map((skill) => (
-              <div
-                key={skill.name}
-                className="skill-box group relative h-40 rounded-xl bg-gray-800/50 border border-gray-700 hover:border-cyan-400 transition-all duration-300 overflow-hidden"
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-8px)';
-                  e.currentTarget.style.boxShadow = '0 10px 25px rgba(34, 211, 238, 0.2)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                {/* Skill content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
-
-                  <h3 className="text-xl font-medium text-gray-300 text-center">
-                    {skill.name}
-                  </h3>
-                </div>
-
-                {/* Hover effect background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                {/* Floating particles effect */}
-                <div className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  {[...Array(5)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="absolute rounded-full bg-cyan-400/20"
-                      style={{
-                        width: Math.random() * 20 + 5,
-                        height: Math.random() * 20 + 5,
-                        top: `${Math.random() * 100}%`,
-                        left: `${Math.random() * 100}%`,
-                        animation: `float ${Math.random() * 10 + 5}s infinite ${Math.random() * 3}s ease-in-out alternate`
-                      }}
-                    />
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            {Object.entries(skills).map(([category, skillsList]) => (
+              <div key={category} className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                <h3 className="text-xl font-bold mb-4 text-gray-800 border-b pb-2 border-teal-200">{category}</h3>
+                <div className="flex flex-wrap gap-3">
+                  {skillsList.map((skill) => (
+                    <span 
+                      key={skill} 
+                      className="bg-teal-50 text-teal-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-teal-100 transition-all"
+                    >
+                      {skill}
+                    </span>
                   ))}
-                </div>
-
-                {/* Corner accent */}
-                <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-400/10 transform rotate-45 origin-bottom-left translate-x-1/2 -translate-y-1/2 group-hover:bg-cyan-400/20 transition-all duration-300"></div>
                 </div>
               </div>
             ))}
           </div>
-
-          {/* Skill categories */}
-          <div className="mt-16 flex flex-wrap justify-center gap-10">
-            {['Programming', 'REST APIs', ' AirFlow', 'Docker', 'MySQL', 'MogoDB', 'UNIX/Linux'].map((category) => (
-              <button
-                key={category}
-                className="px-4 py-2 rounded-full bg-gray-800 text-gray-300 hover:bg-cyan-500/20 hover:text-cyan-400 transition-all duration-300 border border-gray-700 hover:border-cyan-400"
-                onClick={() => {
-                  // Filter logic would go here in a real implementation
-                  console.log(`Filter by ${category}`);
-                }}
-              >
-                {category}
-              </button>
-            ))}
+          
+          {/* Additional Skills */}
+          <div className="mt-12 bg-white p-8 rounded-xl shadow-md border border-gray-100">
+            <h3 className="text-xl font-bold mb-6 text-gray-800 border-b pb-2 border-teal-200">Additional Competencies</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                "Agile Methodologies",
+                "System Architecture",
+                "Technical Documentation",
+                "Code Review",
+                "Performance Optimization",
+                "Debugging",
+                "CI/CD Pipelines",
+                "Cloud Computing"
+              ].map((skill) => (
+                <div key={skill} className="flex items-center gap-2">
+                  <svg className="h-5 w-5 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span className="text-gray-700">{skill}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -585,66 +357,53 @@ export default function Portfolio() {
       <section
         id="projects"
         ref={(el) => registerSection(el, 'projects')}
-        className="min-h-screen flex items-center justify-center py-24 px-8 bg-gradient-to-br from-gray-800 to-gray-900"
+        className="min-h-screen flex items-center justify-center py-24 px-8 bg-white"
       >
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-cyan-500/10"
-              style={{
-                width: Math.random() * 100 + 50,
-                height: Math.random() * 100 + 50,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animation: `float ${Math.random() * 10 + 10}s infinite ${Math.random() * 5}s ease-in-out alternate`
-              }}
-            />
-          ))}
-        </div>
         <div className="max-w-6xl mx-auto w-full">
-          <h2 className="text-4xl font-bold mb-12 text-center text-cyan-400">
-            Featured Projects
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-900">
+            Featured <span className="text-teal-600">Projects</span>
           </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (
-              <div
-                key={project.title}
-                className="bg-gray-800 rounded-xl overflow-hidden border-2 border-gray-700 hover:border-cyan-400 transition-all duration-300 group hover:-translate-y-2 relative"
+              <div 
+                key={project.title} 
+                className="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group"
               >
-                <div className="h-48 bg-gradient-to-br from-gray-700 to-gray-800 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center text-4xl text-gray-600 font-bold opacity-70 group-hover:opacity-30 transition-opacity duration-300">
-                    {index + 1}
+                <div className="h-48 bg-gradient-to-r from-teal-500 to-blue-500 relative overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-30 transition-opacity">
+                    <svg className="h-32 w-32 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+                    </svg>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button
-                      className="px-4 py-2 bg-cyan-500 text-white rounded-lg opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // In a real app, this would navigate to the project
-                        alert(`Viewing ${project.title}`);
-                      }}
-                    >
-                      View Project
-                    </button>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent flex items-end p-6">
+                    <h3 className="text-xl font-bold text-white">{project.title}</h3>
                   </div>
                 </div>
+                
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-300 mb-4">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <p className="text-gray-600 mb-4">{project.description}</p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {project.tags.map(tag => (
-                      <span
-                        key={tag}
-                        className="px-2 py-1 bg-gray-700/50 rounded text-xs text-gray-300 hover:bg-cyan-500/20 hover:text-cyan-400 transition-all cursor-default"
+                      <span 
+                        key={tag} 
+                        className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-medium hover:bg-teal-100 hover:text-teal-700 transition-all"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
+                  
+                  <button 
+                    className="text-teal-600 font-medium hover:text-teal-700 flex items-center gap-1 transition-all"
+                    onClick={() => alert(`Viewing ${project.title}`)}
+                  >
+                    View Project
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             ))}
@@ -656,46 +415,37 @@ export default function Portfolio() {
       <section
         id="experience"
         ref={(el) => registerSection(el, 'experience')}
-        className="min-h-screen flex items-center justify-center py-24 px-8 bg-gradient-to-br from-gray-900 to-gray-800"
+        className="min-h-screen flex items-center justify-center py-24 px-8 bg-gray-50"
       >
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-cyan-500/10"
-              style={{
-                width: Math.random() * 100 + 50,
-                height: Math.random() * 100 + 50,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animation: `float ${Math.random() * 10 + 10}s infinite ${Math.random() * 5}s ease-in-out alternate`
-              }}
-            />
-          ))}
-        </div>
         <div className="max-w-4xl mx-auto w-full">
-          <h2 className="text-4xl font-bold mb-12 text-center text-cyan-400">
-            Professional Experience
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-900">
+            Professional <span className="text-teal-600">Experience</span>
           </h2>
-
-          <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-cyan-400 before:to-transparent md:before:ml-8">
+          
+          <div className="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-teal-400 before:to-transparent md:before:ml-8">
             {experience.map((exp, index) => (
               <div key={index} className="relative pl-12 md:pl-16 group">
-                <div className="absolute left-0 top-0 w-4 h-4 rounded-full bg-cyan-400 border-4 border-gray-900 transform -translate-x-1/2 group-hover:scale-125 transition-transform z-10"></div>
-                <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700 group-hover:border-cyan-400 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/10">
+                <div className="absolute left-0 top-0 w-4 h-4 rounded-full bg-teal-600 border-4 border-white transform -translate-x-1/2 group-hover:scale-125 transition-transform z-10 shadow-md"></div>
+                
+                <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 group-hover:shadow-lg transition-all">
                   <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2">
-                    <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                    <h3 className="text-xl font-bold text-gray-800 group-hover:text-teal-600 transition-colors">
                       {exp.role}
                     </h3>
-                    <span className="text-cyan-400 text-sm">{exp.period}</span>
+                    <span className="text-teal-600 text-sm font-medium">{exp.period}</span>
                   </div>
-                  <h4 className="text-gray-400 mb-2">{exp.company}</h4>
-                  <p className="text-gray-300 mb-3">{exp.description}</p>
-                  <ul className="space-y-2">
+                  
+                  <h4 className="text-gray-600 font-medium mb-3">{exp.company}</h4>
+                  
+                  <p className="text-gray-600 mb-4">{exp.description}</p>
+                  
+                  <ul className="space-y-3">
                     {exp.achievements.map((achievement, i) => (
                       <li key={i} className="flex items-start">
-                        <span className="text-cyan-400 mr-2">✓</span>
-                        <span className="text-gray-300">{achievement}</span>
+                        <svg className="h-5 w-5 text-teal-500 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-gray-700">{achievement}</span>
                       </li>
                     ))}
                   </ul>
@@ -710,143 +460,157 @@ export default function Portfolio() {
       <section
         id="contact"
         ref={(el) => registerSection(el, 'contact')}
-        className="min-h-screen flex items-center justify-center py-24 px-8 bg-gradient-to-br from-gray-800 to-gray-900"
+        className="min-h-screen flex items-center justify-center py-24 px-8 bg-white"
       >
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-cyan-500/10"
-              style={{
-                width: Math.random() * 100 + 50,
-                height: Math.random() * 100 + 50,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animation: `float ${Math.random() * 10 + 10}s infinite ${Math.random() * 5}s ease-in-out alternate`
-              }}
-            />
-          ))}
-        </div>
         <div className="max-w-4xl mx-auto w-full grid md:grid-cols-2 gap-12">
           <div>
-            <h2 className="text-4xl font-bold mb-6 text-cyan-400">Get In Touch</h2>
-            <p className="text-gray-300 text-lg leading-relaxed mb-8">
-              Have a project in mind or want to discuss potential opportunities?
-              Feel free to reach out and I'll get back to you as soon as possible.
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
+              Get In <span className="text-teal-600">Touch</span>
+            </h2>
+            
+            <p className="text-gray-600 text-lg leading-relaxed mb-8">
+              Have a project in mind or want to discuss potential opportunities? Feel free to reach out and I'll get back to you as soon as possible.
             </p>
-
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 hover:text-cyan-400 transition-colors cursor-pointer">
-                <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 hover:bg-cyan-500/20 transition-all">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
+            
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="bg-teal-100 p-3 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <span className="text-gray-300 hover:text-cyan-400 transition-colors">pratham@example.com</span>
+                <div>
+                  <h4 className="text-gray-500 text-sm font-medium">Email</h4>
+                  <a href="mailto:pratham@example.com" className="text-gray-800 hover:text-teal-600 transition-colors">pratham@example.com</a>
+                </div>
               </div>
-
-              <div className="flex items-center gap-4 hover:text-cyan-400 transition-colors cursor-pointer">
-                <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 hover:bg-cyan-500/20 transition-all">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              
+              <div className="flex items-center gap-4">
+                <div className="bg-teal-100 p-3 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                 </div>
-                <span className="text-gray-300 hover:text-cyan-400 transition-colors">+1 (123) 456-7890</span>
+                <div>
+                  <h4 className="text-gray-500 text-sm font-medium">Phone</h4>
+                  <a href="tel:+11234567890" className="text-gray-800 hover:text-teal-600 transition-colors">+1 (123) 456-7890</a>
+                </div>
               </div>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-xl font-bold text-gray-300 mb-4">Connect with me</h3>
-              <div className="flex gap-4">
-                {[
-                  { name: 'GitHub', icon: '💻' },
-                  { name: 'LinkedIn', icon: '🔗' },
-                  { name: 'Twitter', icon: '🐦' },
-                  { name: 'Dribbble', icon: '🏀' }
-                ].map((social) => (
-                  <a
-                    key={social.name}
-                    href="#"
-                    className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-xl hover:bg-cyan-500 hover:text-white transition-all"
-                    aria-label={social.name}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.1) rotate(5deg)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
-                    }}
-                  >
-                    {social.icon}
-                  </a>
-                ))}
+              
+              <div className="mt-8">
+                <h4 className="text-lg font-bold text-gray-800 mb-4">Connect with me</h4>
+                <div className="flex gap-4">
+                  {[
+                    { name: 'GitHub', icon: 'github', color: 'gray' },
+                    { name: 'LinkedIn', icon: 'linkedin', color: 'blue' },
+                    { name: 'Twitter', icon: 'twitter', color: 'sky' },
+                    { name: 'Medium', icon: 'book-open', color: 'gray' }
+                  ].map((social) => (
+                    <a
+                      key={social.name}
+                      href="#"
+                      className={`bg-${social.color}-100 p-3 rounded-full text-${social.color}-600 hover:bg-${social.color}-200 transition-all hover:scale-110`}
+                      aria-label={social.name}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        {social.icon === 'github' && (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                        )}
+                        {social.icon === 'linkedin' && (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+                        )}
+                        {social.icon === 'twitter' && (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        )}
+                        {social.icon === 'book-open' && (
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        )}
+                      </svg>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-
+          
+          {/* Contact Form */}
           <div>
             {formSubmitted ? (
-              <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-6 text-center">
-                <div className="text-green-400 text-5xl mb-4">✓</div>
-                <h3 className="text-xl font-bold text-green-400 mb-2">Thank you!</h3>
-                <p className="text-gray-300">Your message has been sent successfully. I'll get back to you soon!</p>
+              <div className="bg-teal-50 border border-teal-200 rounded-xl p-8 text-center shadow-md">
+                <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-teal-600 mb-2">Thank you!</h3>
+                <p className="text-gray-600">Your message has been sent successfully. I'll get back to you soon!</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                     <input
                       type="text"
+                      id="name"
                       name="name"
-                      placeholder="Name"
+                      placeholder="Your name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
                       required
                     />
                   </div>
                   <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                     <input
                       type="email"
+                      id="email"
                       name="email"
-                      placeholder="Email"
+                      placeholder="your.email@example.com"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
                       required
                     />
                   </div>
                 </div>
+                
                 <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
                   <input
                     type="text"
+                    id="subject"
                     name="subject"
-                    placeholder="Subject"
+                    placeholder="Subject of your message"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
                     required
                   />
                 </div>
+                
                 <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
                   <textarea
+                    id="message"
                     name="message"
-                    placeholder="Message"
+                    placeholder="Your message here..."
                     rows={5}
                     value={formData.message}
                     onChange={handleInputChange}
-                    className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
                     required
                   ></textarea>
                 </div>
+                
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-medium py-3 px-4 rounded-lg hover:opacity-90 transition-all duration-300 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
                 >
                   Send Message
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>
                 </button>
               </form>
@@ -856,119 +620,90 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900/80 py-8 text-center">
-        <div className="container mx-auto px-6">
-          <div className="flex justify-center gap-6 mb-4">
-            {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className="text-gray-400 hover:text-cyan-400 transition-colors"
-              >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-              </button>
-            ))}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-6 md:mb-0">
+              <h3 className="text-2xl font-bold text-white mb-2">Pratham Vichare</h3>
+              <p className="text-gray-400">Electrical & Computer Engineer</p>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-6 mb-6">
+              {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
+                <button
+                  key={section}
+                  onClick={() => scrollToSection(section)}
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                </button>
+              ))}
+            </div>
+            
+            <div className="flex gap-4">
+              {['github', 'linkedin', 'twitter'].map((social) => (
+                <a
+                  key={social}
+                  href="#"
+                  className="bg-gray-800 hover:bg-gray-700 p-2 rounded-full transition-all"
+                  aria-label={social}
+                >
+                  <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    {social === 'github' && (
+                      <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                    )}
+                    {social === 'linkedin' && (
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    )}
+                    {social === 'twitter' && (
+                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                    )}
+                  </svg>
+                </a>
+              ))}
+            </div>
           </div>
-          <p className="text-gray-400">
-            &copy; {new Date().getFullYear()} Pratham Vichare. All rights reserved.
-          </p>
+          
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; {new Date().getFullYear()} Pratham Vichare. All rights reserved.</p>
+          </div>
         </div>
       </footer>
 
-      {/* Responsive CSS */}
+      {/* Global Styles */}
       <style jsx global>{`
         @keyframes float {
           0% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(5deg); }
+          50% { transform: translateY(-10px) rotate(2deg); }
           100% { transform: translateY(0) rotate(0deg); }
         }
+        
         @keyframes scroll {
           0% { transform: translateY(0); opacity: 1; }
-          50% { transform: translateY(10px); opacity: 0.5; }
+          50% { transform: translateY(8px); opacity: 0.5; }
           100% { transform: translateY(0); opacity: 1; }
         }
+        
         .animate-scroll {
           animation: scroll 2s infinite;
         }
-
+        
+        /* Smooth scrolling */
+        html {
+          scroll-behavior: smooth;
+        }
+        
         /* Mobile responsiveness */
         @media (max-width: 768px) {
-          /* Move navbar to bottom on mobile */
-          .fixed.right-0 {
-            right: auto;
-            bottom: 0;
-            top: auto;
-            left: 0;
-            width: 100%;
-            height: auto;
+          .fixed.left-0 {
             padding: 10px 0;
-            background-color: rgba(17, 24, 39, 0.8) !important;
-          }
-          
-          .flex-col {
-            flex-direction: row;
-            justify-content: center;
-            gap: 10px;
           }
           
           section {
-            padding-right: 0 !important;
-            padding-bottom: 70px;
-          }
-
-          footer {
-            padding-right: 0 !important;
-            padding-bottom: 70px;
+            padding-top: 100px;
+            padding-bottom: 80px;
           }
         }
-        @keyframes roleChange {
-    0%, 20% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    25%, 45% {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    50%, 70% {
-      transform: translateY(-200%);
-      opacity: 0;
-    }
-    75%, 95% {
-      transform: translateY(-300%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes animate-tilt {
-    0%, 100% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg); }
-    25% { transform: perspective(1000px) rotateX(5deg) rotateY(5deg); }
-    50% { transform: perspective(1000px) rotateX(0deg) rotateY(-5deg); }
-    75% { transform: perspective(1000px) rotateX(-5deg) rotateY(0deg); }
-  }
-  
-  @keyframes typing {
-    0%, 90%, 100% { width: 0; }
-    30%, 60% { width: 100%; }
-  }
-  
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
-  
-  @keyframes fadeOut {
-    0%, 80% { opacity: 1; }
-    100% { opacity: 0; }
-  }
-  
-  @keyframes wave {
-    0%, 40%, 100% { transform: translateY(0); }
-    20% { transform: translateY(-10px); }
-  }
       `}</style>
     </div>
   );
