@@ -1,8 +1,18 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import {
+  FiHome,
+  FiUser,
+  FiCode,
+  FiFolder,
+  FiBriefcase,
+  FiMail
+} from 'react-icons/fi';
+
 
 export default function Portfolio() {
+
   const [activeSection, setActiveSection] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const [formData, setFormData] = useState({
@@ -14,6 +24,69 @@ export default function Portfolio() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const sections = useRef<HTMLElement[]>([]);
   const navRef = useRef<HTMLDivElement>(null);
+
+  // Typewriter effect state
+  const [displayedText, setDisplayedText] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [typingSpeed, setTypingSpeed] = useState(150);
+  const [showCursor, setShowCursor] = useState(true);
+
+  const titles = [
+    "Computer Engineer",
+    "Problem Solver",
+    "Tech Enthusiast",
+    "Software Developer",
+    "Data World Explorer",
+    "Gamer"
+  ];
+  const navItems = [
+  { id: 'home', icon: <FiHome size={30} />, label: 'Home' },
+  { id: 'about', icon: <FiUser size={30} />, label: 'About' },
+  { id: 'skills', icon: <FiCode size={30} />, label: 'Skills' },
+  { id: 'projects', icon: <FiFolder size={30} />, label: 'Projects' },
+  { id: 'experience', icon: <FiBriefcase size={30} />, label: 'Experience' },
+  { id: 'contact', icon: <FiMail size={30} />, label: 'Contact' }
+];
+
+  // Typewriter effect
+  useEffect(() => {
+    const currentTitle = titles[currentIndex];
+    
+    const timer = setTimeout(() => {
+      if (isDeleting) {
+        // Deleting characters
+        setDisplayedText(currentTitle.substring(0, displayedText.length - 1));
+        setTypingSpeed(75); // Faster when deleting
+      } else {
+        // Adding characters
+        setDisplayedText(currentTitle.substring(0, displayedText.length + 1));
+        setTypingSpeed(150); // Normal typing speed
+      }
+
+      // When title is fully typed
+      if (!isDeleting && displayedText === currentTitle) {
+        setTypingSpeed(1500); // Pause at end
+        setIsDeleting(true);
+      } 
+      // When title is fully deleted
+      else if (isDeleting && displayedText === '') {
+        setIsDeleting(false);
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % titles.length);
+        setTypingSpeed(500); // Pause before typing next
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [displayedText, currentIndex, isDeleting]);
+
+  // Blinking cursor effect
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 500);
+    return () => clearInterval(cursorInterval);
+  }, []);
 
   // Register section refs
   const registerSection = (element: HTMLElement | null, id: string) => {
@@ -142,36 +215,36 @@ export default function Portfolio() {
     }
   ];
 
-  return (
-    <div className="relative bg-gray-50">
-      {/* Modern Navigation Bar */}
-      <div
-        ref={navRef}
-        className={`fixed left-0 top-0 w-full z-50 transition-all duration-300 flex justify-center ${
-          scrolled
-            ? "bg-white shadow-md py-3"
-            : "bg-transparent py-5"
-        }`}
-      >
-        <div className="flex gap-4 md:gap-8">
-          {['home', 'about', 'skills', 'projects', 'experience', 'contact'].map((section) => (
-            <button
-              key={section}
-              onClick={() => scrollToSection(section)}
-              className={`px-3 py-1 md:px-4 md:py-2 rounded-full text-sm md:text-base font-medium transition-all ${
-                activeSection === section
-                  ? 'bg-teal-600 text-white shadow-md'
-                  : 'text-gray-700 hover:text-teal-600 hover:bg-teal-50'
+   return (
+     <div className="relative bg-gray-50">
+    {/* Modern Vertical Navigation Bar with Blur Effect */}
+    <div
+      ref={navRef}
+      className={`fixed left-0 top-0 h-full w-16 md:w-20 z-50 transition-all duration-300 flex items-center justify-center 
+        backdrop-blur-lg bg-white/30 border-r border-gray-200/50`}
+    >
+      <div className="flex flex-col gap-3 md:gap-4 p-2 w-full">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => scrollToSection(item.id)}
+            className={`w-full p-3 rounded-lg flex flex-col items-center justify-center transition-all
+              ${activeSection === item.id
+                ? 'bg-teal-600 text-white shadow-md'
+                : 'text-gray-700 hover:text-teal-600 hover:bg-white/50'
               }`}
-              aria-label={section}
-            >
-              {section.charAt(0).toUpperCase() + section.slice(1)}
-            </button>
-          ))}
-        </div>
+            aria-label={item.label}
+            title={item.label}
+          >
+            {item.icon}
+            <span className="text-xs mt-1 hidden md:block">
+              {item.label}
+            </span>
+          </button>
+        ))}
       </div>
-
-      {/* Hero Section */}
+    </div>
+      {/* Hero Section with Typewriter Effect */}
       <section
         id="home"
         ref={(el) => registerSection(el, 'home')}
@@ -184,8 +257,11 @@ export default function Portfolio() {
               <h1 className="text-4xl md:text-6xl font-bold text-gray-900">
                 Hi, I'm <span className="text-teal-600">Pratham Vichare</span>
               </h1>
-              <div className="text-xl md:text-2xl text-gray-600">
-                <span className="font-medium">Electrical & Computer Engineer</span> | Problem Solver | Tech Enthusiast
+              <div className="text-xl md:text-2xl text-gray-600 min-h-[2.5rem] flex items-center">
+                <span className="font-medium">
+                  {displayedText}
+                  <span className={`inline-block w-1 h-6 bg-gray-600 ml-1 ${showCursor ? 'opacity-100' : 'opacity-0'}`}></span>
+                </span>
               </div>
             </div>
             
@@ -235,68 +311,76 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section
-        id="about"
-        ref={(el) => registerSection(el, 'about')}
-        className="min-h-screen flex items-center justify-center py-24 px-8 bg-white"
-      >
-        <div className="max-w-6xl mx-auto w-full">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-900">
-            About <span className="text-teal-600">Me</span>
-          </h2>
+     {/* About Section */}
+<section
+  id="about"
+  ref={(el) => registerSection(el, 'about')}
+  className="min-h-screen flex items-center justify-center py-24 px-8 bg-white"
+>
+  <div className="max-w-6xl mx-auto w-full">
+    <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-gray-900">
+      About <span className="text-teal-600">Me</span>
+    </h2>
+    
+    <div className="grid md:grid-cols-2 gap-12">
+      {/* Education */}
+      <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="bg-teal-100 p-3 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-800">Education</h3>
+        </div>
+        
+        <div className="space-y-6">
+          <div className="pl-4 border-l-4 border-teal-400">
+            <h4 className="text-xl font-semibold text-gray-800">Master's in Electrical & Computer Engineering</h4>
+            <p className="text-gray-600">University of Windsor</p>
+            <p className="text-gray-500 text-sm">2023 - 2025</p>
+          </div>
           
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* Education */}
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="bg-teal-100 p-3 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800">Education</h3>
-              </div>
-              
-              <div className="space-y-6">
-                <div className="pl-4 border-l-4 border-teal-400">
-                  <h4 className="text-xl font-semibold text-gray-800">Master's in Electrical & Computer Engineering</h4>
-                  <p className="text-gray-600">University of Windsor</p>
-                  <p className="text-gray-500 text-sm">2023 - 2025</p>
-                </div>
-                
-                <p className="text-gray-600 leading-relaxed">
-                  Specialized in creating real-world tech solutions that bridge hardware and software, with coursework in advanced algorithms, distributed systems, and machine learning.
-                </p>
-              </div>
-            </div>
-            
-            {/* Personal */}
-            <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="bg-teal-100 p-3 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800">Personal</h3>
-              </div>
-              
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                When I'm not coding, I enjoy competitive gaming which enhances my problem-solving and teamwork skills. I'm passionate about continuous learning and staying updated with the latest tech trends.
-              </p>
-              
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Strategic Thinking</span>
-                  <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Teamwork</span>
-                  <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Adaptability</span>
-                </div>
-              </div>
-            </div>
+          <div className="pl-4 border-l-4 border-teal-400">
+            <h4 className="text-xl font-semibold text-gray-800">Bachelor's in Computer Science & Engineering</h4>
+            <p className="text-gray-600">Parul University, Vadodara</p>
+            <p className="text-gray-500 text-sm">2019 - 2023</p>
+          </div>
+          
+          <p className="text-gray-600 leading-relaxed">
+            My academic journey includes core CS subjects like Data Structures & Algorithms, Operating Systems, and Database Management Systems, complemented by advanced graduate studies in hardware-software integration.
+          </p>
+        </div>
+      </div>
+      
+      {/* Personal */}
+      <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="bg-teal-100 p-3 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-800">Personal</h3>
+        </div>
+        
+        <p className="text-gray-600 mb-6 leading-relaxed">
+          When I'm not coding, I enjoy competitive gaming which enhances my problem-solving and teamwork skills. I'm passionate about continuous learning and staying updated with the latest tech trends.
+        </p>
+        
+        <div className="space-y-4">
+          <div className="flex flex-wrap gap-3">
+            <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Strategic Thinking</span>
+            <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Teamwork</span>
+            <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Adaptability</span>
+            <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Problem Solving</span>
+            <span className="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-medium">Quick Learner</span>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Skills Section */}
       <section
